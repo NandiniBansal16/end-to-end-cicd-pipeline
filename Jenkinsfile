@@ -118,7 +118,7 @@ pipeline {
                     }"""
                     // ↑ pattern: picks up everything inside jarstaging/
                     //   jarstaging/ is where pom.xml puts the JAR after
-                    //   'mvn clean deploy' in the build stage
+                    //   'mvn clean deploy' in the build stage.
                     // ↑ target: uploads to maven-libs-release-local repo
                     //   in JFrog — make sure this repo exists in your JFrog
 
