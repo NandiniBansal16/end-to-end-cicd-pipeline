@@ -15,3 +15,6 @@ ADD jarstaging/com/satish/demo-workshop/2.1.2/demo-workshop-2.1.2.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
 # ↑ Starts the Spring Boot app when the container runs
+
+
+######
