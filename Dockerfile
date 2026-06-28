@@ -1,20 +1,9 @@
-FROM openjdk:8
-# ↑ Keep openjdk:8 — your pom.xml has <java.version>1.8</java.version>
-# The JAR was compiled with Java 8 so the runtime must also be Java 8
+FROM eclipse-temurin:8-jre
+# ↑ eclipse-temurin is the official replacement for openjdk
+# openjdk:8 was removed from Docker Hub
+# eclipse-temurin:8-jre is maintained by the Eclipse Foundation
+# -jre means Java Runtime only (smaller image, we don't need JDK to run the JAR)
 
 ADD jarstaging/com/satish/demo-workshop/2.1.2/demo-workshop-2.1.2.jar app.jar
-# ↑ DO NOT change anything here — here is why each part is fixed:
-#
-# jarstaging/          = folder created by 'mvn clean deploy' in build stage
-# com/satish/          = your groupId 'com.satish' becomes a folder path
-# demo-workshop/       = your artifactId from pom.xml
-# 2.1.2/               = your version from pom.xml
-# demo-workshop-2.1.2.jar = Maven always names JAR as artifactId-version.jar
-#
-# Changed: sample_app.jar → app.jar (cleaner name, no functional difference)
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
-# ↑ Starts the Spring Boot app when the container runs
-
-
-# 
