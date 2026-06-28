@@ -1,9 +1,9 @@
 // ─── CHANGE THESE 3 LINES TO YOUR VALUES ───────────────────────
-def registry  = 'https://YOUR_JFROG_NAME.jfrog.io'
+def registry  = 'https://trial65h59b.jfrog.io'
 // ↑ Replace YOUR_JFROG_NAME with your JFrog account name
 // Example: 'https://johnsmith.jfrog.io'
 
-def imageName = 'YOUR_JFROG_NAME.jfrog.io/YOUR_DOCKER_REPO_NAME/demo-workshop'
+def imageName = 'trial65h59b.jfrog.io/nandini-docker-local/demo-workshop'
 // ↑ Replace YOUR_JFROG_NAME and YOUR_DOCKER_REPO_NAME
 // Keep demo-workshop — it matches your artifactId in pom.xml
 // Example: 'johnsmith.jfrog.io/john-docker-local/demo-workshop'
@@ -56,14 +56,14 @@ pipeline {
 
         stage('SonarQube analysis') {
             environment {
-                scannerHome = tool 'YOUR_SONAR_SCANNER_NAME'
+                scannerHome = tool 'sonar-scanner'
                 // ↑ Replace YOUR_SONAR_SCANNER_NAME with the exact name
                 // you typed in Jenkins → Manage Jenkins → Tools →
                 // SonarQube Scanner → Name field in Step 4
                 // Example: tool 'sonar-scanner'
             }
             steps {
-                withSonarQubeEnv('YOUR_SONAR_SERVER_NAME') {
+                withSonarQubeEnv('sonarqube-server') {
                 // ↑ Replace YOUR_SONAR_SERVER_NAME with the exact name
                 // you typed in Jenkins → Manage Jenkins → System →
                 // SonarQube servers → Name field in Step 4
