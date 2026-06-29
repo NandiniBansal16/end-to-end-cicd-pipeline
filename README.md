@@ -19,7 +19,7 @@ This project demonstrates the design and implementation of a **complete producti
 A Spring Boot REST API (Java 8) that serves as the target application for the entire pipeline.
 
 ## Architecture
-![Architecture](images/architecture.png)
+![Architecture](img/img1.png)
 
 | Category | Tool | Purpose |
 |---|---|---|
