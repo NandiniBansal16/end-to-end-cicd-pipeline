@@ -17,6 +17,7 @@ spec:
         - name: demo-workshop
           image: trial65h59b.jfrog.io/nandini-docker-local/demo-workshop:2.1.2
           ports:
-            - containerPort: 8080
+            - containerPort: 8000
+              # ↑ Changed from 8080 to 8000
       imagePullSecrets:
         - name: jfrog-registry-secret

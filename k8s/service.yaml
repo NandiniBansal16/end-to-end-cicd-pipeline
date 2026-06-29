@@ -9,5 +9,8 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 8000
+      # ↑ Changed from 8080 to 8000
+      # Spring Boot app runs on 8000 as shown in logs:
+      # "Tomcat initialized with port(s): 8000 (http)"
   type: LoadBalancer
