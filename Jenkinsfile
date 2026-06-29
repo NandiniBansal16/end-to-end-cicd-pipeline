@@ -97,13 +97,30 @@ pipeline {
             }
         }
 
-        // stage("Deploy") {
-        //     steps {
-        //         script {
-        //             sh 'helm install demo-workshop demo-workshop-1.0.0'
-        //         }
-        //     }
-        // }
 
-    }
+        stage("Deploy to EKS") {
+            steps {
+                script {
+                    echo '<--------------- Deploy to EKS Started --------------->'
+                    sh '''
+                    aws eks update-kubeconfig \
+                    --region us-east-1 \
+                    --name demo-workshop-eks
+
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+
+                    kubectl rollout status deployment/demo-workshop \
+                    -n demo-workshop \
+                    --timeout=120s
+
+                    echo "======= Deployment Complete ======="
+                    kubectl get pods -n demo-workshop
+                    kubectl get service demo-workshop-service -n demo-workshop
+                    '''
+                    echo '<--------------- Deploy to EKS Ended --------------->'
+                 }
+            }
+        }
+
 }

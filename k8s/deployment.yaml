@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-workshop
+  namespace: demo-workshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-workshop
+  template:
+    metadata:
+      labels:
+        app: demo-workshop
+    spec:
+      containers:
+        - name: demo-workshop
+          image: trial65h59b.jfrog.io/nandini-docker-local/demo-workshop:2.1.2
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: jfrog-registry-secret
