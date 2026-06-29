@@ -268,14 +268,6 @@ git push
 
 [![GitHub](https://img.shields.io/badge/GitHub-NandiniBansal16-black?style=flat&logo=github)](https://github.com/NandiniBansal16)
 
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
 ## ⭐ Acknowledgements
 
 Project structure inspired by [NotHarshhaa/DevOps-Projects](https://github.com/NotHarshhaa/DevOps-Projects) — DevOps Project 06.
