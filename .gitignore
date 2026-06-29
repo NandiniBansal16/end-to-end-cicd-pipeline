@@ -1,1 +1,14 @@
-./target/*
+# Terraform — never push these
+**/.terraform/
+**/.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Keys
+*.pem
+.aws/
+
+# Maven build output
+target/
+jarstaging/
