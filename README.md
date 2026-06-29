@@ -18,48 +18,8 @@ This project demonstrates the design and implementation of a **complete producti
 ### Application
 A Spring Boot REST API (Java 8) that serves as the target application for the entire pipeline.
 
----
-
 ## Architecture
-
-```
-Developer
-    │
-    │  git push
-    ▼
-┌─────────────┐
-│   GitHub    │ ──── Webhook ────►  Jenkins Master
-│    Repo     │                          │
-└─────────────┘                          │ delegates to
-                                         ▼
-                                  Jenkins Agent (Maven)
-                                         │
-                    ┌────────────────────┼────────────────────┐
-                    │                    │                    │
-                    ▼                    ▼                    ▼
-              Build & Test         SonarCloud           JFrog Artifactory
-              (Maven 3.9)        Code Analysis         JAR + Docker Image
-                                                              │
-                                                             ▼
-                                                      AWS EKS Cluster
-                                                      (Kubernetes 1.35)
-                                                             │
-                                                    ┌────────┴────────┐
-                                                    │   Spring Boot   │
-                                                    │   Application   │
-                                                    │  (LoadBalancer) │
-                                                    └────────┬────────┘
-                                                             │
-                                                    ┌────────┴────────┐
-                                                    │   Monitoring    │
-                                                    │  Prometheus +   │
-                                                    │    Grafana      │
-                                                    └─────────────────┘
-```
-
----
-
-## Tools & Technologies
+![Architecture](images/architecture.png)
 
 | Category | Tool | Purpose |
 |---|---|---|
@@ -75,51 +35,6 @@ Developer
 | **Package Manager** | Helm | Deploy Prometheus and Grafana |
 | **Monitoring** | Prometheus | Collect cluster and app metrics |
 | **Visualization** | Grafana | Display metrics dashboards |
-
----
-
-## Repository Structure
-
-```
-end-to-end-cicd-pipeline/
-│
-├── Jenkinsfile                  # Complete CI/CD pipeline definition
-├── Dockerfile                   # Container image definition
-├── pom.xml                      # Maven build configuration
-├── sonar-project.properties     # SonarCloud configuration
-│
-├── k8s/                         # Kubernetes manifests
-│   ├── deployment.yaml             # App deployment (1 replica)
-│   └── service.yaml                # LoadBalancer service (port 80→8000)
-│
-└── src/                         # Spring Boot application source code
-    └── main/java/com/satish/demo/
-```
-
-```
-devops-project06-infra/
-│
-├── jenkins-infra/               # Jenkins infrastructure Terraform
-│   ├── provider.tf
-│   ├── variables.tf
-│   ├── vpc.tf                      # VPC, Subnet, Internet Gateway
-│   ├── security-group.tf           # Firewall rules
-│   ├── ec2-instances.tf            # Jenkins Master + Agent EC2s
-│   └── outputs.tf
-│
-├── eks-infra/                   # EKS cluster Terraform
-│   ├── provider.tf
-│   ├── variables.tf
-│   ├── eks-cluster.tf              # EKS cluster + node group + IAM roles
-│   └── outputs.tf
-│
-└── ansible/                     # Ansible playbooks
-    ├── inventory.ini               # Jenkins Master + Agent hosts
-    ├── jenkins-master.yml          # Install Java + Jenkins
-    └── jenkins-agent.yml           # Install Java + Maven + Docker
-```
-
----
 
 ## Pipeline Stages
 
