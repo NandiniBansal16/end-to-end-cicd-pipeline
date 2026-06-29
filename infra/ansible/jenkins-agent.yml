@@ -1,0 +1,102 @@
+---
+- name: Install tools on Jenkins Agent
+  hosts: jenkins_agents
+  become: yes
+
+  tasks:
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Java 21
+      apt:
+        name: openjdk-21-jdk
+        state: present
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+
+    - name: Download Maven 3.9.16
+      get_url:
+        url: https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz
+        dest: /tmp/apache-maven-3.9.16-bin.tar.gz
+        mode: '0644'
+
+    - name: Extract Maven to /opt
+      unarchive:
+        src: /tmp/apache-maven-3.9.16-bin.tar.gz
+        dest: /opt/
+        remote_src: yes
+
+    - name: Create Maven symlink
+      file:
+        src: /opt/apache-maven-3.9.16
+        dest: /opt/maven
+        state: link
+
+    - name: Set Java and Maven environment variables
+      copy:
+        dest: /etc/profile.d/maven.sh
+        content: |
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export M2_HOME=/opt/maven
+          export MAVEN_HOME=/opt/maven
+          export PATH=${M2_HOME}/bin:${PATH}
+        mode: '0755'
+
+    - name: Add Docker GPG key
+      get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /usr/share/keyrings/docker-archive-keyring.asc
+        mode: '0644'
+
+    - name: Add Docker apt repository
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.asc] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+        state: present
+        filename: docker
+
+    - name: Install Docker CE
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+
+    - name: Start and enable Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add ubuntu user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Verify Maven installation
+      command: /opt/maven/bin/mvn --version
+      register: maven_out
+      changed_when: false
+
+    - name: Print Maven version
+      debug:
+        var: maven_out.stdout
+
+    - name: Verify Docker installation
+      command: docker --version
+      register: docker_out
+      changed_when: false
+
+    - name: Print Docker version
+      debug:
+        var: docker_out.stdout
